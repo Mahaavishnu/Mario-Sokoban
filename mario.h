@@ -1,3 +1,8 @@
+#ifndef MARIO_H
+#define MARIO_H
+
+#include <SDL.h>
+
 typedef struct 		objlist
 {
 	SDL_Surface		*ptr;
@@ -5,3 +10,5 @@ typedef struct 		objlist
 } 					Objlist;
 
 void				init(SDL_Window **win, SDL_Surface **screen);
+
+#endif

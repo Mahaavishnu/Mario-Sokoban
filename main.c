@@ -11,31 +11,26 @@ int					main(int argc, char *argv[])
 	SDL_Window 		*win;
 	SDL_Surface 	*screen;
 	SDL_Surface 	*mario;
+	SDL_Surface 	*objectif;
 	SDL_Rect		position;
 
-	printf("avant list\n");
 	list = (Objlist **)malloc(sizeof(Objlist*));
 	win = NULL;
 	screen = NULL;
 
-	printf("avant init\n");
-
 	init(&win, &screen);
 
-	printf("après init\n");
 
 	position.x = 50;
 	position.y = 50;
 	(mario = IMG_Load("img/mario_bas.gif")) == NULL ? freeSDL(list, win) : pushObject(list, mario);
 	SDL_BlitSurface(mario, NULL, screen, &position);
 
+	(objectif = IMG_Load("img/objectif.bmp")) == NULL ? freeSDL(list, win) : pushObject(list, objectif);
+	SDL_BlitSurface(objectif, NULL, screen, &position);
+
 	if (SDL_UpdateWindowSurface(win) != 0)
-	{
-		fprintf(stderr, "SDL_UpdateWindowSurface Error : %s\n", SDL_GetError());
-		SDL_DestroyWindow(win);
-		SDL_Quit();
-		exit(EXIT_FAILURE);
-	}
+		freeSDL(list, win);
 
 	SDL_Delay(5000);
 
@@ -49,7 +44,7 @@ void				init(SDL_Window **win, SDL_Surface **screen)
 		fprintf(stderr, "SDL_Init Error : %s\n", SDL_GetError());
 		exit(EXIT_FAILURE);
 	}
-	*win = SDL_CreateWindow("Hellow World", 100, 100, 800, 600, SDL_WINDOW_SHOWN);
+	*win = SDL_CreateWindow("Mario Sokoban", 100, 100, 34*12, 34*12, SDL_WINDOW_SHOWN);
 	if (*win == NULL)
 	{
 		fprintf(stderr, "SDL_CreateWindow Error : %s\n", SDL_GetError());

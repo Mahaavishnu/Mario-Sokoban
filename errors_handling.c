@@ -24,7 +24,7 @@ void			freeSDL(Objlist **list, SDL_Window *win)
 		*list = tmp;
 	}
 	free(list);
-	fprintf(stderr, "SDL_SetSurfaceAlphaMod Error : %s\n", SDL_GetError());
+	fprintf(stderr, "SDL Error : %s\n", SDL_GetError());
 	SDL_DestroyWindow(win);
 	SDL_Quit();
 	exit(EXIT_FAILURE);
