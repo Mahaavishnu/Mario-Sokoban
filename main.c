@@ -17,6 +17,7 @@ int					main(int argc, char *argv[])
 	//env.win = malloc(sizeof(SDL_Window));
 	//env.screen = malloc(sizeof(SDL_Surface));
 	env.play = 0;
+	env.dir = DOWN;
 
 	printf("avant init\n");
 

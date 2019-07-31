@@ -19,6 +19,14 @@ typedef enum 		box
 	MARIO
 }					Box;
 
+typedef enum 		dir
+{
+	DOWN,
+	LEFT,
+	UP,
+	RIGHT
+}					Dir;
+
 typedef struct 		env
 {
 	Objlist 		*list;
@@ -27,6 +35,8 @@ typedef struct 		env
 	SDL_Event 		event;
 	int 			play;
 	Box 			map[12][12];
+	Dir 			dir;
+	SDL_Rect		pos;
 }					Env;
 
 #endif
