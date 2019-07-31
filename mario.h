@@ -16,7 +16,8 @@ typedef enum 		box
 	BOX,
 	OK,
 	TARGET,
-	MARIO
+	MARIO,
+	MARIOTARGET = MARIO + 5
 }					Box;
 
 typedef enum 		dir

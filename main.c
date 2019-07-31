@@ -95,16 +95,6 @@ int					main(int argc, char *argv[])
 						if (env.play == 1)
 							move_mario(&env);
 						break;
-					/*case SDLK_DOWN:
-						position.y++;
-						break;
-					case SDLK_RIGHT:
-						position.x++;
-						break;
-					case SDLK_LEFT:
-						position.x--;
-						break;
-						*/
 				}
 				break;
 		}

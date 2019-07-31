@@ -75,10 +75,12 @@ void			show_map(Env *env)
 						SDL_BlitSurface(env->surfaces[NOTHING], NULL, env->screen, &position);
 					SDL_BlitSurface(env->surfaces[env->map[i][j]], NULL, env->screen, &position);
 					break;
-				case MARIO:
+				case MARIO | MARIOTARGET:
 					env->pos.x = i;
 					env->pos.y = j;
 					SDL_BlitSurface(env->surfaces[NOTHING], NULL, env->screen, &position);
+					if (env->map[i][j] == MARIOTARGET)
+						SDL_BlitSurface(env->surfaces[TARGET], NULL, env->screen, &position);
 					SDL_BlitSurface(env->surfaces[MARIO + env->dir], NULL, env->screen, &position);
 					break;
 			}
@@ -115,21 +117,71 @@ void			test_success(Env *env)
 
 void			move_mario(Env *env)
 {
+	int			x;
+	int			y;
 	switch (env->event.key.keysym.sym)
 	{
 		case SDLK_UP:
 			env->dir = UP;
-			//if (env->pos.y > 0 && env->map[])
+			x = env->pos.x;
+			y = env->pos.y;
+			if (x - 1 >= 0)
+			{
+				switch (env->map[x-1][y])
+				{
+					case WALL:
+						break;
+					case NOTHING:
+						if (env->map[x][y] == MARIO)
+							env->map[x][y] = NOTHING;
+						else
+							env->map[x][y] = TARGET;
+						env->map[x-1][y] = MARIO;
+						break;
+					case TARGET:
+						env->map[x][y] = NOTHING;
+						env->map[x-1][y] = MARIOTARGET;
+					case BOX:
+						if (x - 2 >= 0)
+						{
+							switch (env->map[x-2][y])
+							{
+								case BOX | OK | WALL:
+									return;
+								case NOTHING:
+									env->map[x-2][y] = BOX;
+									env->map[x-1][y] = MARIO;
+									if (env->map[x][y] == MARIO)
+										env->map[x][y] = NOTHING;
+									else
+										env->map[x][y] = TARGET;
+									break;
+								case TARGET:
+									env->map[x-2][y] = OK;
+							}
+						}
+						else
+							return;
+						break;
+				}
+				show_map(env);
+				test_success(env);
+			}
 			break;
 		case SDLK_RIGHT:
 			env->dir = RIGHT;
+			x = env->pos.x;
+			y = env->pos.y + 1;
 			break;
 		case SDLK_DOWN:
 			env->dir = DOWN;
+			x = env->pos.x + 1;
+			y = env->pos.y;
 			break;
 		case SDLK_LEFT:
 			env->dir = LEFT;
+			x = env->pos.x;
+			y = env->pos.y - 1;
 			break;
 	}
-	test_success(env);
 }
