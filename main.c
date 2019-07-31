@@ -44,6 +44,18 @@ int					main(int argc, char *argv[])
 	env.list = NULL;
 
 
+	(env.surfaces[NOTHING] = SDL_CreateRGBSurface(SDL_SWSURFACE, 34, 34, 32, 0, 0, 0, 0)) == NULL ? freeSDL(&env, 1) : pushObject(&env, env.surfaces[NOTHING]);
+	SDL_FillRect(env.surfaces[NOTHING], NULL, SDL_MapRGB(env.surfaces[NOTHING]->format, 255, 255, 255));
+
+	(env.surfaces[WALL] = IMG_Load("img/mur.jpg")) == NULL ? freeSDL(&env, 1) : pushObject(&env, env.surfaces[WALL]);
+	(env.surfaces[BOX] = IMG_Load("img/caisse.jpg")) == NULL ? freeSDL(&env, 1) : pushObject(&env, env.surfaces[BOX]);
+	(env.surfaces[OK] = IMG_Load("img/caisse_ok.jpg")) == NULL ? freeSDL(&env, 1) : pushObject(&env, env.surfaces[OK]);
+	(env.surfaces[TARGET] = IMG_Load("img/objectif.bmp")) == NULL ? freeSDL(&env, 1) : pushObject(&env, env.surfaces[TARGET]);
+	(env.surfaces[MARIO + DOWN] = IMG_Load("img/mario_bas.gif")) == NULL ? freeSDL(&env, 1) : pushObject(&env, env.surfaces[MARIO + DOWN]);
+	(env.surfaces[MARIO + LEFT] = IMG_Load("img/mario_gauche.gif")) == NULL ? freeSDL(&env, 1) : pushObject(&env, env.surfaces[MARIO + LEFT]);
+	(env.surfaces[MARIO + UP] = IMG_Load("img/mario_haut.gif")) == NULL ? freeSDL(&env, 1) : pushObject(&env, env.surfaces[MARIO + UP]);
+	(env.surfaces[MARIO + RIGHT] = IMG_Load("img/mario_droite.gif")) == NULL ? freeSDL(&env, 1) : pushObject(&env, env.surfaces[MARIO + RIGHT]);
+
 	printf("avant pushObject\n");
 
 	position.x = 0;
@@ -56,7 +68,7 @@ int					main(int argc, char *argv[])
 
 	printf("juste avant boucle\n");
 
-	while (env.play != -1)
+	while (42)
 	{
 		SDL_WaitEvent(&(env.event));
 		switch ((env.event).type)
@@ -76,12 +88,14 @@ int					main(int argc, char *argv[])
 							open_map(&env);
 							show_map(&env);
 							env.play = 1;
+							test_success(&env);
 						}
 						break;
-					case SDLK_UP:
-						position.y--;
+					case SDLK_UP | SDLK_DOWN | SDLK_RIGHT | SDLK_LEFT:
+						if (env.play == 1)
+							move_mario(&env);
 						break;
-					case SDLK_DOWN:
+					/*case SDLK_DOWN:
 						position.y++;
 						break;
 					case SDLK_RIGHT:
@@ -90,6 +104,7 @@ int					main(int argc, char *argv[])
 					case SDLK_LEFT:
 						position.x--;
 						break;
+						*/
 				}
 				break;
 		}

@@ -61,16 +61,6 @@ void			show_map(Env *env)
 	int				i = 0;
 	int				j = 0;
 
-	SDL_FillRect(env->screen, NULL, SDL_MapRGB(env->screen->format, 255, 255, 255));
-
-	(wall = IMG_Load("img/mur.jpg")) == NULL ? freeSDL(env, 1) : pushObject(env, wall);
-	(box = IMG_Load("img/caisse.jpg")) == NULL ? freeSDL(env, 1) : pushObject(env, box);
-	(ok = IMG_Load("img/caisse_ok.jpg")) == NULL ? freeSDL(env, 1) : pushObject(env, ok);
-	(target = IMG_Load("img/objectif.bmp")) == NULL ? freeSDL(env, 1) : pushObject(env, target);
-	(down = IMG_Load("img/mario_bas.gif")) == NULL ? freeSDL(env, 1) : pushObject(env, down);
-	(left = IMG_Load("img/mario_gauche.gif")) == NULL ? freeSDL(env, 1) : pushObject(env, left);
-	(up = IMG_Load("img/mario_haut.gif")) == NULL ? freeSDL(env, 1) : pushObject(env, up);
-	(right = IMG_Load("img/mario_droite.gif")) == NULL ? freeSDL(env, 1) : pushObject(env, right);
 
 	while (i < 12)
 	{
@@ -80,36 +70,16 @@ void			show_map(Env *env)
 			position.y = i * 34;
 			switch (env->map[i][j])
 			{
-				case WALL:
-					SDL_BlitSurface(wall, NULL, env->screen, &position);
-					break;
-				case BOX:
-					SDL_BlitSurface(box, NULL, env->screen, &position);
-					break;
-				case OK:
-					SDL_BlitSurface(ok, NULL, env->screen, &position);
-					break;
-				case TARGET:
-					SDL_BlitSurface(target, NULL, env->screen, &position);
+				case NOTHING...TARGET:
+					if (env->map[i][j] == TARGET)
+						SDL_BlitSurface(env->surfaces[NOTHING], NULL, env->screen, &position);
+					SDL_BlitSurface(env->surfaces[env->map[i][j]], NULL, env->screen, &position);
 					break;
 				case MARIO:
 					env->pos.x = i;
 					env->pos.y = j;
-					switch (env->dir)
-					{
-						case DOWN:
-							SDL_BlitSurface(down, NULL, env->screen, &position);
-							break;
-						case LEFT:
-							SDL_BlitSurface(left, NULL, env->screen, &position);
-							break;
-						case UP:
-							SDL_BlitSurface(up, NULL, env->screen, &position);
-							break;
-						case RIGHT:
-							SDL_BlitSurface(right, NULL, env->screen, &position);
-							break;
-					}
+					SDL_BlitSurface(env->surfaces[NOTHING], NULL, env->screen, &position);
+					SDL_BlitSurface(env->surfaces[MARIO + env->dir], NULL, env->screen, &position);
 					break;
 			}
 			j++;
@@ -120,4 +90,46 @@ void			show_map(Env *env)
 
 	if (SDL_UpdateWindowSurface(env->win) != 0)
 		freeSDL(env, 1);
+}
+
+void			test_success(Env *env)
+{
+	int			i;
+	int			j;
+
+	i = 0;
+	j = 0;
+	while (i < 12)
+	{
+		while (j < 12)
+		{
+			if (env->map[i][j] == TARGET)
+				return;
+			j++;
+		}
+		j = 0;
+		i++;
+	}
+	freeSDL(env, 0);
+}
+
+void			move_mario(Env *env)
+{
+	switch (env->event.key.keysym.sym)
+	{
+		case SDLK_UP:
+			env->dir = UP;
+			//if (env->pos.y > 0 && env->map[])
+			break;
+		case SDLK_RIGHT:
+			env->dir = RIGHT;
+			break;
+		case SDLK_DOWN:
+			env->dir = DOWN;
+			break;
+		case SDLK_LEFT:
+			env->dir = LEFT;
+			break;
+	}
+	test_success(env);
 }

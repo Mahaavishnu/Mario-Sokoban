@@ -19,6 +19,9 @@ void			freeSDL(Env *env, int error)
 	Objlist 	*tmp;
 
 	//tmp = malloc(sizeof(Objlist));
+	(error == 1) ? SDL_FillRect(env->screen, NULL, SDL_MapRGB(env->screen->format, 255, 0, 0)) : SDL_FillRect(env->screen, NULL, SDL_MapRGB(env->screen->format, 0, 255, 0));
+	SDL_UpdateWindowSurface(env->win);
+	SDL_Delay(1000);
 	while (env->list != NULL)
 	{
 		printf("début while freeSDL\n");

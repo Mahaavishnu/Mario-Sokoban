@@ -35,6 +35,7 @@ typedef struct 		env
 	SDL_Event 		event;
 	int 			play;
 	Box 			map[12][12];
+	SDL_Surface 	*surfaces[9];
 	Dir 			dir;
 	SDL_Rect		pos;
 }					Env;
