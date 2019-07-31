@@ -1,10 +1,10 @@
 SHELL=/bin/sh
 CC=gcc    #Commande du compilateur
 CFLAGS=-O3 -I/usr/local/include/SDL2 #Option d'optimisation du programme
-LDLIBS=-lSDL2 -lSDL2_image #-lSDL_mixer #Linker
+LDLIBS=-lSDL2 -lSDL2_image -ljpeg #-lSDL_mixer #Linker
 EXEC=mario  #Nom du programme à modifier
 
-src = main.c errors_handling.c
+src = main.c errors_handling.c jeu.c
 
 obj = $(src:.c=.o)
 

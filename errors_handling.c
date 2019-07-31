@@ -3,29 +3,44 @@
 #include <SDL.h>
 #include "mario.h"
 
-void			pushObject(Objlist **list, SDL_Surface *ptr)
+void			pushObject(Env *env, SDL_Surface *ptr)
 {
 	Objlist		*obj;
 
 	obj = malloc(sizeof(Objlist));
 	obj->ptr = ptr;
-	obj->next = *list;
-	*list = obj;
+	obj->next = env->list;
+	env->list = obj;
+	printf("pushObject\n");
 }
 
-void			freeSDL(Objlist **list, SDL_Window *win)
+void			freeSDL(Env *env, int error)
 {
 	Objlist 	*tmp;
-	while (*list != NULL)
+
+	//tmp = malloc(sizeof(Objlist));
+	while (env->list != NULL)
 	{
-		tmp = (*list)->next;
-		SDL_FreeSurface((*list)->ptr);
-		free(*list);
-		*list = tmp;
+		printf("début while freeSDL\n");
+		tmp = (env->list)->next;
+		printf("avant SDL_FreeSurface()\n");
+		SDL_FreeSurface((env->list)->ptr);
+		free(env->list);
+		env->list = tmp;
 	}
-	free(list);
-	fprintf(stderr, "SDL Error : %s\n", SDL_GetError());
-	SDL_DestroyWindow(win);
+	//free(tmp);
+	printf("après while freeSDL\n");
+	//free(env->list);
+	if (error == 1)
+		fprintf(stderr, "SDL Error : %s\n", SDL_GetError());
+	SDL_FreeSurface(env->screen);
+	SDL_DestroyWindow(env->win);
 	SDL_Quit();
-	exit(EXIT_FAILURE);
+	//free(env->win);
+	//free(env->screen);
+	//free(env);
+	if (error == 1)
+		exit(EXIT_FAILURE);
+	else
+		exit (EXIT_SUCCESS);
 }
