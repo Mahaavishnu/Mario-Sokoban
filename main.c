@@ -83,15 +83,36 @@ int					main(int argc, char *argv[])
 						freeSDL(&env, 0);
 						break;
 					case SDLK_1:
-						if (env.play != 1)
+						if (env.play == 0)
 						{
-							open_map(&env);
+							if (argc != 2)
+								freeSDL(&env, 2);
+							open_map(&env, argv[1]);
 							show_map(&env);
 							env.play = 1;
 							test_success(&env);
+							//SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Test", "This is a test message", env.win);
 						}
 						break;
-					case SDLK_UP | SDLK_DOWN | SDLK_RIGHT | SDLK_LEFT:
+					/*case SDLK_2:
+						if (env.play == 0)
+						{
+
+						}
+						break;*/
+					case SDLK_UP:
+						if (env.play == 1)
+							move_mario(&env);
+						break;
+					case SDLK_DOWN:
+						if (env.play == 1)
+							move_mario(&env);
+						break;
+					case SDLK_LEFT:
+						if (env.play == 1)
+							move_mario(&env);
+						break;
+					case SDLK_RIGHT:
 						if (env.play == 1)
 							move_mario(&env);
 						break;

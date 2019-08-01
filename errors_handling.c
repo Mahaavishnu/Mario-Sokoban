@@ -42,7 +42,9 @@ void			freeSDL(Env *env, int error)
 	//free(env->win);
 	//free(env->screen);
 	//free(env);
-	if (error == 1)
+	if (error == 2)
+		printf("usage : ./mario <filename>\n");
+	if (error != 1)
 		exit(EXIT_FAILURE);
 	else
 		exit (EXIT_SUCCESS);
